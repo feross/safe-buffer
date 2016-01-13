@@ -140,8 +140,8 @@ and it will get back 1,000 bytes of uninitialized memory from the server.
 
 #### [`bittorrent-dht`](https://www.npmjs.com/package/bittorrent-dht)
 
-[mafintosh](https://github.com/mafintosh) and I ([feross](http://feross.org/)) found this
-issue in one of our own packages,
+[Mathius Buus](https://github.com/mafintosh) and I
+([Feross Aboukhadijeh](http://feross.org/)) found this issue in one of our own packages,
 [`bittorrent-dht`](https://www.npmjs.com/package/bittorrent-dht). The bug would allow
 anyone on the internet to send a series of messages to a user of `bittorrent-dht` and get
 them to reveal 20 bytes of uninitialized memory at a time from their node.js process.
