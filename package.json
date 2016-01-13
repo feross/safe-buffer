@@ -18,13 +18,13 @@
   },
   "homepage": "https://github.com/feross/safe-buffer",
   "keywords": [
-    "safe-buffer",
     "buffer",
-    "security",
-    "safe",
-    "uninitialized",
+    "buffer allocate",
     "node security",
-    "buffer allocate"
+    "safe",
+    "safe-buffer",
+    "security",
+    "uninitialized"
   ],
   "license": "MIT",
   "main": "index.js",
