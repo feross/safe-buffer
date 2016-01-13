@@ -16,7 +16,7 @@ npm install safe-buffer
 
 ## usage
 
-The goal of this package is to make the node.js `Buffer` safer to use.
+The goal of this package is to provide a safe replacement for the node.js `Buffer`.
 
 It's a drop-in replacement for `Buffer`. You can use it by adding one `require` line to
 the top of your node.js modules:
@@ -30,7 +30,7 @@ new Buffer('hey', 'utf8')
 new Buffer([1, 2, 3], 'utf8')
 new Buffer(obj)
 
-// But this potentially unsafe operation returns zeroed out memory:
+// But this potentially unsafe operation now returns zeroed out memory:
 
 new Buffer(16) // this is safe now!
 
@@ -109,13 +109,13 @@ hex:
 ```js
 // Take a JSON payload {str: "some string"} and convert it to hex
 var server = http.createServer(function (req, res) {
-  var buf = ''
+  var data = ''
   req.setEncoding('utf8')
-  req.on('data', function (data) {
-    buf += data
+  req.on('data', function (chunk) {
+    data += chunk
   })
   req.on('end', function () {
-    var body = JSON.parse(buf)
+    var body = JSON.parse(data)
     res.end(new Buffer(body.str).toString('hex'))
   })
 })
