@@ -288,6 +288,12 @@ The original issues in `bittorrent-dht`
 [Mathias Buus](https://github.com/mafintosh) and
 [Feross Aboukhadijeh](http://feross.org/).
 
+Thanks to [Adam Baldwin](https://github.com/evilpacket) for helping disclose these issues
+and for his work running the [Node Security Project](https://nodesecurity.io/).
+
+Thanks to [John Hiesey](https://github.com/jhiesey) for proofreading this readme.
+
+
 ## license
 
 MIT. Copyright (C) [Feross Aboukhadijeh](http://feross.org)
