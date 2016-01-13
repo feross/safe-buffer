@@ -142,7 +142,7 @@ memory by remote attackers.
 
 #### [`bittorrent-dht`](https://www.npmjs.com/package/bittorrent-dht)
 
-[Mathius Buus](https://github.com/mafintosh) and I
+[Mathias Buus](https://github.com/mafintosh) and I
 ([Feross Aboukhadijeh](http://feross.org/)) found this issue in one of our own packages,
 [`bittorrent-dht`](https://www.npmjs.com/package/bittorrent-dht). The bug would allow
 anyone on the internet to send a series of messages to a user of `bittorrent-dht` and get
