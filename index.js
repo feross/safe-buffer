@@ -3,13 +3,9 @@ module.exports.Buffer = SafeBuffer
 
 function SafeBuffer (arg1, arg2) {
   var buffer = new Buffer(arg1, arg2)
-
   if (typeof arg1 === 'number') {
-    for (var i = 0; i < arg1; i++) {
-      buffer[i] = 0
-    }
+    buffer.fill(0)
   }
-
   return buffer
 }
 
