@@ -29,14 +29,17 @@ var Buffer = require('safe-buffer')
 new Buffer('hey', 'utf8')
 new Buffer([1, 2, 3], 'utf8')
 new Buffer(obj)
-new Buffer(16) // will return zeroed out memory, for safety
+
+// But this potentially unsafe operation returns zeroed out memory:
+
+new Buffer(16) // this is safe now!
 
 // Create uninitialized buffers explicitly, when required for performance:
 
 Buffer.alloc(16) // potentially unsafe
 ```
 
-## why is `Buffer` unsafe?
+## Why is `Buffer` unsafe?
 
 Today, the node.js `Buffer` constructor is overloaded to handle many different argument
 types like `String`, `Array`, `Object`, `TypedArrayView` (`Uint8Array`, etc.),
@@ -58,15 +61,9 @@ function toHex (str) {
 
 ### Remote Memory Disclosure
 
-If an attacker can trick your program into calling the `Buffer` constructor with a
-`Number` argument, then they can read uninitialized memory from the node.js process.
+If an attacker can make your program call the `Buffer` constructor with a `Number`
+argument, then they can make it allocate uninitialized memory from the node.js process.
 This could potentially disclose TLS private keys, user data, or database passwords.
-
-This is a very serious bug. It's similar in severity to the
-[the Heartbleed bug](http://heartbleed.com/) that allowed disclosure of OpenSSL process
-memory by remote attackers.
-
-### So how does this work?
 
 When the `Buffer` constructor is passed a `Number` argument, it returns an
 **UNINITIALIZED** block of memory of the specified `size`. When you create a `Buffer` like
@@ -96,7 +93,8 @@ for (var i = 0; i < buf.length; i++) {
 }
 ```
 
-### Would this ever happen in real code?
+
+### Would this ever be a problem in real code?
 
 Yes. It's surprisingly common to forget to check the type of your variables in a
 dynamically-typed language like JavaScript.
@@ -129,11 +127,15 @@ In this example, an http client just has to send:
 
 ```json
 {
-  str: 1000
+  "str": 1000
 }
 ```
 
 and it will get back 1,000 bytes of uninitialized memory from the server.
+
+This is a very serious bug. It's similar in severity to the
+[the Heartbleed bug](http://heartbleed.com/) that allowed disclosure of OpenSSL process
+memory by remote attackers.
 
 
 ### Real-world packages that were vulnerable
@@ -144,18 +146,19 @@ and it will get back 1,000 bytes of uninitialized memory from the server.
 ([Feross Aboukhadijeh](http://feross.org/)) found this issue in one of our own packages,
 [`bittorrent-dht`](https://www.npmjs.com/package/bittorrent-dht). The bug would allow
 anyone on the internet to send a series of messages to a user of `bittorrent-dht` and get
-them to reveal 20 bytes of uninitialized memory at a time from their node.js process.
+them to reveal 20 bytes at a time of uninitialized memory from the node.js process.
 
 Here's
 [the commit](https://github.com/feross/bittorrent-dht/commit/6c7da04025d5633699800a99ec3fbadf70ad35b8)
-that fixed it. We deprecated all vulnerable versions on npm, so users will get a warning
-to upgrade to a newer version.
+that fixed it. We released a new fixed version, created a
+[Node Security Project disclosure](https://nodesecurity.io/advisories/68), and deprecated all
+vulnerable versions on npm so users will get a warning to upgrade to a newer version.
 
 #### [`ws`](https://www.npmjs.com/package/ws)
 
 That got us wondering if there were other vulnerable packages. Sure enough, within a short
-period of time, we found the same issue in [`ws`](https://www.npmjs.com/package/ws), the most popular WebSocket server and
-client implementation in node.js.
+period of time, we found the same issue in [`ws`](https://www.npmjs.com/package/ws), the
+most popular WebSocket implementation in node.js.
 
 If certain APIs were called with `Number` parameters instead of `String` or `Buffer` as
 expected, then uninitialized server memory would be disclosed to the remote peer.
@@ -185,7 +188,8 @@ server.on('connection', function (socket) {
 
 Here's [the release](https://github.com/websockets/ws/releases/tag/1.0.1) where the issue
 was fixed, with a more detailed explanation. Props to
-[Arnout Kazemier](https://github.com/3rd-Eden) for the quick fix.
+[Arnout Kazemier](https://github.com/3rd-Eden) for the quick fix. Here's the
+[Node Security Project disclosure](https://nodesecurity.io/advisories/67).
 
 
 ### What's the solution?
