@@ -36,7 +36,6 @@ new Buffer(16) // will return zeroed out memory, for safety
 Buffer.alloc(16) // potentially unsafe
 ```
 
-
 ## why is `Buffer` unsafe?
 
 Today, the node.js `Buffer` constructor is overloaded to handle many different argument
@@ -73,7 +72,7 @@ When the `Buffer` constructor is passed a `Number` argument, it returns an
 **UNINITIALIZED** block of memory of the specified `size`. When you create a `Buffer` like
 this, you **MUST** overwrite the contents before returning it to the user.
 
-From the node.js docs:
+From the [node.js docs](https://nodejs.org/api/buffer.html#buffer_new_buffer_size):
 
 > `new Buffer(size)`
 >
