@@ -138,7 +138,7 @@ This is a very serious bug. It's similar in severity to the
 memory by remote attackers.
 
 
-### Real-world packages that were vulnerable
+### Which real-world packages were vulnerable?
 
 #### [`bittorrent-dht`](https://www.npmjs.com/package/bittorrent-dht)
 
@@ -197,11 +197,18 @@ was fixed, with a more detailed explanation. Props to
 It's important that node.js offers a fast way to get memory otherwise performance-critical
 applications would needlessly get a lot slower.
 
-But we need a better way to *signal our intent* as programmers.
+But we need a better way to *signal our intent* as programmers. **When we want
+uninitialized memory, we should request it explicitly.**
 
-**When we want uninitialized memory, we should request it explicitly.**
+Sensitive functionality should not be packed into a developer-friendly API that loosely
+accepts many different types. This type of API encourages the lazy practice of passing
+variables in without checking the type very carefully.
 
 #### `Buffer.alloc(number)`
+
+The functionality of creating buffers with uninitialized memory should be part of another
+API. We propose `Buffer.alloc(number)`. This way, it's not part of an API that frequently
+gets user input of all sorts of different types passed into it.
 
 ```js
 var buf = Buffer.alloc(16) // careful, uninitialized memory!
@@ -212,18 +219,11 @@ for (var i = 0; i < buf.length; i++) {
 }
 ```
 
-Sensitive functionality should not be packed into a developer-friendly API that loosely
-accepts many different types. This type of API encourages the lazy practice of passing
-variables in without checking the type very carefully.
 
-The functionality of creating buffers with uninitialized memory should be part of another
-API. We propose `Buffer.alloc(number)`. This way, it's not part of an API that frequently
-gets user input of all sorts of different types passed into it.
+### How do we fix node.js core?
 
-#### Fixing node.js core
-
-We sent [a PR to node.js core](https://github.com/nodejs/node/pull/4514) which defends
-against one case:
+We sent [a PR to node.js core](https://github.com/nodejs/node/pull/4514) (merged as
+`semver-major`) which defends against one case:
 
 ```js
 var str = 16
@@ -239,7 +239,7 @@ But this is only a partial solution, since if the programmer does `new Buffer(va
 (without an `encoding` parameter) there's no way to know what they intended. If `variable`
 is sometimes a number, then uninitialized memory will sometimes be returned.
 
-#### What's the real long-term fix?
+### What's the real long-term fix?
 
 We could deprecate and remove `new Buffer(number)` and use `Buffer.alloc(number)` when
 we need uninitialized memory. But that would break 1000s of packages.
@@ -296,7 +296,7 @@ Thanks to [Adam Baldwin](https://github.com/evilpacket) for helping disclose the
 and for his work running the [Node Security Project](https://nodesecurity.io/).
 
 Thanks to [John Hiesey](https://github.com/jhiesey) for proofreading this README and
-auditing this code.
+auditing the code.
 
 
 ## license
