@@ -31,7 +31,7 @@ new Buffer([1, 2, 3], 'utf8')
 new Buffer(obj)
 new Buffer(16) // will return zeroed out memory, for safety
 
-// Create uninitialized buffers explicity, when required for performance:
+// Create uninitialized buffers explicitly, when required for performance:
 
 Buffer.alloc(16) // potentially unsafe
 ```
@@ -59,7 +59,7 @@ function toHex (str) {
 ### Remote Memory Disclosure
 
 If an attacker can trick your program into calling the `Buffer` constructor with a
-`Number` argument, then they can read unitialized memory from the node.js process.
+`Number` argument, then they can read uninitialized memory from the node.js process.
 This could potentially disclose TLS private keys, user data, or database passwords.
 
 This is a very serious bug. It's similar in severity to the
@@ -109,7 +109,7 @@ Here's an example of a vulnerable service that takes a JSON payload and converts
 hex:
 
 ```js
-// Take a JSON payload {str: "str"} and convert it to hex
+// Take a JSON payload {str: "some string"} and convert it to hex
 var server = http.createServer(function (req, res) {
   var buf = ''
   req.setEncoding('utf8')
@@ -228,12 +228,12 @@ new Buffer(str, 'utf8')
 
 In this situation, it's implied that the programmer intended the first argument to be a
 string, since they passed an encoding as a second argument. Today, node.js will allocate
-unitialized memory in the case of `new Buffer(number, encoding)`, which is proabably not
+uninitialized memory in the case of `new Buffer(number, encoding)`, which is probably not
 what the programmer intended.
 
 But this is only a partial solution, since if the programmer does `new Buffer(variable)`
 (without an `encoding` parameter) there's no way to know what they intended. If `variable`
-is sometimes a number, then unitialized memory will sometimes be returned.
+is sometimes a number, then uninitialized memory will sometimes be returned.
 
 #### What's the real long-term fix?
 
@@ -291,7 +291,7 @@ The original issues in `bittorrent-dht`
 Thanks to [Adam Baldwin](https://github.com/evilpacket) for helping disclose these issues
 and for his work running the [Node Security Project](https://nodesecurity.io/).
 
-Thanks to [John Hiesey](https://github.com/jhiesey) for proofreading this readme.
+Thanks to [John Hiesey](https://github.com/jhiesey) for proofreading this README.
 
 
 ## license
