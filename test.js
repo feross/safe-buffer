@@ -1,5 +1,5 @@
 var test = require('tape')
-var SafeBuffer = require('safe-buffer').Buffer
+var SafeBuffer = require('./').Buffer
 
 test('safe usage continues to work as before', function (t) {
   t.deepEqual(new SafeBuffer('hey'), new Buffer('hey'))
