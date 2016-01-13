@@ -9,10 +9,15 @@ function SafeBuffer (arg1, arg2) {
   return buffer
 }
 
-Buffer.alloc = function (len) {
+// Copy static methods and properties from Buffer
+Object.keys(Buffer).forEach(function (prop) {
+  SafeBuffer[prop] = Buffer
+})
+
+SafeBuffer.alloc = function (len) {
   if (typeof len !== 'number') {
     throw new TypeError('Argument must be a number')
   }
-
   return new Buffer(len)
 }
+
