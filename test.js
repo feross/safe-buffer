@@ -14,8 +14,13 @@ test('safe usage continues to work as before', function (t) {
 
 test('new Buffer(number) always returns zeroed out memory', function (t) {
   for (var i = 0; i < 10; i++) {
-    t.deepEqual(new SafeBuffer(1000), new Buffer(1000).fill(0))
-    t.deepEqual(new SafeBuffer(1000 * 1000), new Buffer(1000 * 1000).fill(0))
+    var expected1 = new Buffer(1000)
+    expected1.fill(0)
+    t.deepEqual(new SafeBuffer(1000), expected1)
+
+    var expected2 = new Buffer(1000 * 1000)
+    expected2.fill(0)
+    t.deepEqual(new SafeBuffer(1000 * 1000), expected2)
   }
   t.end()
 })
