@@ -11,7 +11,7 @@ function SafeBuffer (arg1, arg2) {
 
 // Copy static methods and properties from Buffer
 Object.keys(Buffer).forEach(function (prop) {
-  SafeBuffer[prop] = Buffer
+  SafeBuffer[prop] = Buffer[prop]
 })
 
 SafeBuffer.alloc = function (len) {

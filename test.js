@@ -5,8 +5,9 @@ test('safe usage continues to work as before', function (t) {
   t.deepEqual(new SafeBuffer('hey'), new Buffer('hey'))
   t.deepEqual(new SafeBuffer('hey', 'utf8'), new Buffer('hey', 'utf8'))
   t.deepEqual(new SafeBuffer([1, 2, 3]), new Buffer([1, 2, 3]))
-  t.ok(SafeBuffer.isBuffer(new SafeBuffer('hey')))
-  t.ok(Buffer.isBuffer(new SafeBuffer('hey')))
+  t.equal(typeof SafeBuffer.isBuffer, 'function')
+  t.equal(SafeBuffer.isBuffer(new SafeBuffer('hey')), true)
+  t.equal(Buffer.isBuffer(new SafeBuffer('hey')), true)
   t.notOk(Buffer.isBuffer({}))
   t.end()
 })
@@ -22,7 +23,8 @@ test('new Buffer(number) always returns zeroed out memory', function (t) {
 test('Buffer.alloc(number)', function (t) {
   var buf = SafeBuffer.alloc(100) // unitialized memory
   t.equal(buf.length, 100)
-  t.ok(Buffer.isBuffer(buf))
+  t.equal(SafeBuffer.isBuffer(buf), true)
+  t.equal(Buffer.isBuffer(buf), true)
   t.end()
 })
 
