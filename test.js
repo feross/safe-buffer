@@ -1,18 +1,32 @@
 var test = require('tape')
 var SafeBuffer = require('./').Buffer
 
-test('safe usage continues to work as before', function (t) {
+test('new SafeBuffer(value) works just like Buffer', function (t) {
   t.deepEqual(new SafeBuffer('hey'), new Buffer('hey'))
   t.deepEqual(new SafeBuffer('hey', 'utf8'), new Buffer('hey', 'utf8'))
+  t.deepEqual(new SafeBuffer('686579', 'hex'), new Buffer('686579', 'hex'))
   t.deepEqual(new SafeBuffer([1, 2, 3]), new Buffer([1, 2, 3]))
+  t.deepEqual(new SafeBuffer(new Uint8Array([1, 2, 3])), new Buffer(new Uint8Array([1, 2, 3])))
+
   t.equal(typeof SafeBuffer.isBuffer, 'function')
   t.equal(SafeBuffer.isBuffer(new SafeBuffer('hey')), true)
   t.equal(Buffer.isBuffer(new SafeBuffer('hey')), true)
-  t.notOk(Buffer.isBuffer({}))
+  t.notOk(SafeBuffer.isBuffer({}))
+
   t.end()
 })
 
-test('new Buffer(number) always returns zeroed out memory', function (t) {
+test('SafeBuffer.from(value) converts to a Buffer', function (t) {
+  t.deepEqual(SafeBuffer.from('hey'), new Buffer('hey'))
+  t.deepEqual(SafeBuffer.from('hey', 'utf8'), new Buffer('hey', 'utf8'))
+  t.deepEqual(SafeBuffer.from('686579', 'hex'), new Buffer('686579', 'hex'))
+  t.deepEqual(SafeBuffer.from([1, 2, 3]), new Buffer([1, 2, 3]))
+  t.deepEqual(SafeBuffer.from(new Uint8Array([1, 2, 3])), new Buffer(new Uint8Array([1, 2, 3])))
+
+  t.end()
+})
+
+test('new SafeBuffer(number) returns zeroed-out memory', function (t) {
   for (var i = 0; i < 10; i++) {
     var expected1 = new Buffer(1000)
     expected1.fill(0)
@@ -25,7 +39,20 @@ test('new Buffer(number) always returns zeroed out memory', function (t) {
   t.end()
 })
 
-test('Buffer.alloc(number)', function (t) {
+test('SafeBuffer.zalloc(number) returns zeroed-out memory', function (t) {
+  for (var i = 0; i < 10; i++) {
+    var expected1 = new Buffer(1000)
+    expected1.fill(0)
+    t.deepEqual(SafeBuffer.zalloc(1000), expected1)
+
+    var expected2 = new Buffer(1000 * 1000)
+    expected2.fill(0)
+    t.deepEqual(SafeBuffer.zalloc(1000 * 1000), expected2)
+  }
+  t.end()
+})
+
+test('SafeBuffer.alloc(number)', function (t) {
   var buf = SafeBuffer.alloc(100) // unitialized memory
   t.equal(buf.length, 100)
   t.equal(SafeBuffer.isBuffer(buf), true)
@@ -33,7 +60,7 @@ test('Buffer.alloc(number)', function (t) {
   t.end()
 })
 
-test('Buffer.alloc() throws with other types', function (t) {
+test('SafeBuffer.alloc() throws with non-number types', function (t) {
   t.plan(4)
   t.throws(function () {
     SafeBuffer.alloc('hey')
@@ -46,5 +73,21 @@ test('Buffer.alloc() throws with other types', function (t) {
   })
   t.throws(function () {
     SafeBuffer.alloc({})
+  })
+})
+
+test('SafeBuffer.zalloc() throws with non-number types', function (t) {
+  t.plan(4)
+  t.throws(function () {
+    SafeBuffer.zalloc('hey')
+  })
+  t.throws(function () {
+    SafeBuffer.zalloc('hey', 'utf8')
+  })
+  t.throws(function () {
+    SafeBuffer.zalloc([1, 2, 3])
+  })
+  t.throws(function () {
+    SafeBuffer.zalloc({})
   })
 })
