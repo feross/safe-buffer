@@ -20,18 +20,18 @@ SafeBuffer.from = function (value, encoding) {
   return new Buffer(value, encoding)
 }
 
-SafeBuffer.alloc = function (len) {
-  if (typeof len !== 'number') {
+SafeBuffer.alloc = function (size) {
+  if (typeof size !== 'number') {
     throw new TypeError('Argument must be a number')
   }
-  return new Buffer(len)
+  return new Buffer(size)
 }
 
-SafeBuffer.zalloc = function (len) {
-  if (typeof len !== 'number') {
+SafeBuffer.zalloc = function (size) {
+  if (typeof size !== 'number') {
     throw new TypeError('Argument must be a number')
   }
-  var buffer = new Buffer(len)
+  var buffer = new Buffer(size)
   buffer.fill(0)
   return buffer
 }
