@@ -29,12 +29,9 @@ var Buffer = require('safe-buffer')
 new Buffer('hey', 'utf8')
 new Buffer([1, 2, 3], 'utf8')
 new Buffer(obj)
+new Buffer(16) // create an uninitialized buffer (potentially unsafe)
 
-// But this potentially unsafe operation now returns zeroed out memory:
-
-new Buffer(16) // this is safe now!
-
-// Going forward, use an explicit API to make clear what you want.
+// But you can use these new explicit APIs to make clear what you want:
 
 Buffer.from('hey', 'utf8') // convert from many types to a Buffer
 Buffer.zalloc(16) // create a zero-filled buffer (safe)
@@ -276,13 +273,13 @@ is sometimes a number, then uninitialized memory will sometimes be returned.
 We could deprecate and remove `new Buffer(number)` and use `Buffer.alloc(number)` when
 we need uninitialized memory. But that would break 1000s of packages.
 
-We believe the best solution is to:
+~~We believe the best solution is to:~~
 
 ~~1. Change `new Buffer(number)` to return safe, zeroed-out memory~~
 
 ~~2. Create a new API for creating uninitialized Buffers. We propose: `Buffer.alloc(number)`~~
 
-### Update
+#### Update
 
 Upon further consideration, we think that returning zeroed out memory is a separate issue.
 The core issue is: unsafe buffer allocation should be in a different API.
