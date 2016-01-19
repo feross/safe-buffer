@@ -34,8 +34,8 @@ new Buffer(16) // create an uninitialized buffer (potentially unsafe)
 // But you can use these new explicit APIs to make clear what you want:
 
 Buffer.from('hey', 'utf8') // convert from many types to a Buffer
-Buffer.zalloc(16) // create a zero-filled buffer (safe)
-Buffer.alloc(16) // create an uninitialized buffer (potentially unsafe)
+Buffer.alloc(16) // create a zero-filled buffer (safe)
+Buffer.allocRaw(16) // create an uninitialized buffer (potentially unsafe)
 ```
 
 ## api
@@ -46,11 +46,11 @@ Creates a new Buffer containing the given `value`. `value` can be an `Array`, `B
 `ArrayBuffer`, `string`, or `TypedArrayView` (`Uint8Array`, etc.). If `value` is a string,
 an `encoding` parameter can also be provided to identify the string character encoding.
 
-### `Buffer.zalloc(size)`
+### `Buffer.alloc(size)`
 
 Allocate a zero-filled buffer with the given `size`. This is safe and recommended to use.
 
-### `Buffer.alloc(size)`
+### `Buffer.allocRaw(size)`
 
 Allocate an uninitialized buffer with the given `size`. This is potentially unsafe. The
 underlying memory for `Buffer` instances created in this way is not initialized. The
@@ -233,14 +233,14 @@ Sensitive functionality should not be packed into a developer-friendly API that 
 accepts many different types. This type of API encourages the lazy practice of passing
 variables in without checking the type very carefully.
 
-#### A new API: `Buffer.alloc(number)`
+#### A new API: `Buffer.allocRaw(number)`
 
 The functionality of creating buffers with uninitialized memory should be part of another
-API. We propose `Buffer.alloc(number)`. This way, it's not part of an API that frequently
-gets user input of all sorts of different types passed into it.
+API. We propose `Buffer.allocRaw(number)`. This way, it's not part of an API that
+frequently gets user input of all sorts of different types passed into it.
 
 ```js
-var buf = Buffer.alloc(16) // careful, uninitialized memory!
+var buf = Buffer.allocRaw(16) // careful, uninitialized memory!
 
 // Immediately overwrite the uninitialized buffer with data from another buffer
 for (var i = 0; i < buf.length; i++) {
@@ -270,31 +270,29 @@ is sometimes a number, then uninitialized memory will sometimes be returned.
 
 ### What's the real long-term fix?
 
-We could deprecate and remove `new Buffer(number)` and use `Buffer.alloc(number)` when
+We could deprecate and remove `new Buffer(number)` and use `Buffer.allocRaw(number)` when
 we need uninitialized memory. But that would break 1000s of packages.
 
 ~~We believe the best solution is to:~~
 
 ~~1. Change `new Buffer(number)` to return safe, zeroed-out memory~~
 
-~~2. Create a new API for creating uninitialized Buffers. We propose: `Buffer.alloc(number)`~~
+~~2. Create a new API for creating uninitialized Buffers. We propose: `Buffer.allocRaw(number)`~~
 
 #### Update
 
-Upon further consideration, we think that returning zeroed out memory is a separate issue.
-The core issue is: unsafe buffer allocation should be in a different API.
-
-We now support adding two APIs:
+We now support adding three new APIs:
 
 - `Buffer.from(value)` - convert from any type to a buffer
-- `Buffer.alloc(size)` - create an uninitialized buffer with given size
+- `Buffer.alloc(size)` - create a zero-filled buffer
+- `Buffer.allocRaw(size)` - create an uninitialized buffer with given size
 
 This solves the core problem that affected `ws` and `bittorrent-dht` which is
 `Buffer(variable)` getting tricked into taking a number argument.
 
 This way, existing code continues working and the impact on the npm ecosystem will be
 minimal. Over time, npm maintainers can migrate performance-critical code to use
-`Buffer.alloc(number)` instead of `new Buffer(number)`.
+`Buffer.allocRaw(number)` instead of `new Buffer(number)`.
 
 
 ### Conclusion

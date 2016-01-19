@@ -20,14 +20,14 @@ SafeBuffer.alloc = function (size) {
   if (typeof size !== 'number') {
     throw new TypeError('Argument must be a number')
   }
-  return Buffer(size)
-}
-
-SafeBuffer.zalloc = function (size) {
-  if (typeof size !== 'number') {
-    throw new TypeError('Argument must be a number')
-  }
   var buffer = Buffer(size)
   buffer.fill(0)
   return buffer
+}
+
+SafeBuffer.allocRaw = function (size) {
+  if (typeof size !== 'number') {
+    throw new TypeError('Argument must be a number')
+  }
+  return Buffer(size)
 }
