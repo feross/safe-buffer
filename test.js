@@ -47,6 +47,25 @@ test('SafeBuffer.allocUnsafe(number)', function (t) {
   t.end()
 })
 
+test('SafeBuffer.from() throws with number types', function (t) {
+  t.plan(5)
+  t.throws(function () {
+    SafeBuffer.from(0)
+  })
+  t.throws(function () {
+    SafeBuffer.from(-1)
+  })
+  t.throws(function () {
+    SafeBuffer.from(NaN)
+  })
+  t.throws(function () {
+    SafeBuffer.from(Infinity)
+  })
+  t.throws(function () {
+    SafeBuffer.from(99)
+  })
+})
+
 test('SafeBuffer.allocUnsafe() throws with non-number types', function (t) {
   t.plan(4)
   t.throws(function () {
