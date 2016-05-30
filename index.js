@@ -26,12 +26,17 @@ if (!SafeBuffer.alloc) {
     if (typeof size !== 'number') {
       throw new TypeError('Argument must be a number')
     }
+    var buf = Buffer(size)
     if (fill !== undefined) {
-      return typeof encoding === 'string'
-        ? Buffer(size).fill(fill, encoding)
-        : Buffer(size).fill(fill)
+      if (typeof encoding === 'string') {
+        buf.fill(fill, encoding)
+      } else {
+        buf.fill(fill)
+      }
+    } else {
+      buf.fill(0)
     }
-    return Buffer(size).fill(0)
+    return buf
   }
 }
 
