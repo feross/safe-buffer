@@ -20,7 +20,7 @@ Object.keys(Buffer).forEach(function (prop) {
 })
 
 SafeBuffer.from = function (arg, encodingOrOffset, length) {
-  if (typeof value === 'number') {
+  if (typeof arg === 'number') {
     throw new TypeError('Argument must not be a number')
   }
   return Buffer(arg, encodingOrOffset, length)
