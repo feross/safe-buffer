@@ -39,27 +39,27 @@ test('SafeBuffer.alloc(number) returns zeroed-out memory', function (t) {
   t.end()
 })
 
-test('SafeBuffer.allocRaw(number)', function (t) {
-  var buf = SafeBuffer.allocRaw(100) // unitialized memory
+test('SafeBuffer.allocUnsafe(number)', function (t) {
+  var buf = SafeBuffer.allocUnsafe(100) // unitialized memory
   t.equal(buf.length, 100)
   t.equal(SafeBuffer.isBuffer(buf), true)
   t.equal(Buffer.isBuffer(buf), true)
   t.end()
 })
 
-test('SafeBuffer.allocRaw() throws with non-number types', function (t) {
+test('SafeBuffer.allocUnsafe() throws with non-number types', function (t) {
   t.plan(4)
   t.throws(function () {
-    SafeBuffer.allocRaw('hey')
+    SafeBuffer.allocUnsafe('hey')
   })
   t.throws(function () {
-    SafeBuffer.allocRaw('hey', 'utf8')
+    SafeBuffer.allocUnsafe('hey', 'utf8')
   })
   t.throws(function () {
-    SafeBuffer.allocRaw([1, 2, 3])
+    SafeBuffer.allocUnsafe([1, 2, 3])
   })
   t.throws(function () {
-    SafeBuffer.allocRaw({})
+    SafeBuffer.allocUnsafe({})
   })
 })
 
