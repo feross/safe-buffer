@@ -27,7 +27,7 @@ It's a drop-in replacement for `Buffer`. You can use it by adding one `require` 
 the top of your node.js modules:
 
 ```js
-var Buffer = require('safe-buffer')
+var Buffer = require('safe-buffer').Buffer
 
 // Existing buffer code will continue to work without issues:
 
@@ -545,7 +545,7 @@ Fortunately, there's an easy fix that can be applied today. Use `safe-buffer` in
 `buffer`.
 
 ```js
-var Buffer = require('safe-buffer')
+var Buffer = require('safe-buffer').Buffer
 ```
 
 Eventually, we hope that node.js core can switch to this new, safer behavior. We believe
