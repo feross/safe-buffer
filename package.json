@@ -10,7 +10,7 @@
   "bugs": {
     "url": "https://github.com/feross/safe-buffer/issues"
   },
-  "dependencies": {},
+  "browser": "./browser.js",
   "devDependencies": {
     "standard": "^7.0.0",
     "tape": "^4.0.0",
