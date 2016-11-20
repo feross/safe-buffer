@@ -2,10 +2,10 @@
 
 #### Safer Node.js Buffer API
 
-**Use the new Node.js v6 Buffer APIs (`Buffer.from`, `Buffer.alloc`,
-`Buffer.allocUnsafe`, `Buffer.allocUnsafeSlow`) in Node.js v0.10, v0.12, v4.x, and v5.x.**
+**Use the new Node.js Buffer APIs (`Buffer.from`, `Buffer.alloc`,
+`Buffer.allocUnsafe`, `Buffer.allocUnsafeSlow`) in all versions of Node.js.**
 
-**Uses the built-in implementations when available.**
+**Uses the built-in implementation when available.**
 
 [travis-image]: https://img.shields.io/travis/feross/safe-buffer.svg
 [travis-url]: https://travis-ci.org/feross/safe-buffer
