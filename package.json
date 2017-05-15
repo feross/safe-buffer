@@ -11,6 +11,9 @@
     "url": "https://github.com/feross/safe-buffer/issues"
   },
   "browser": "./browser.js",
+  "dependencies": {
+    "buffer": "^5.0.0"
+  },
   "devDependencies": {
     "standard": "*",
     "tape": "^4.0.0",
