@@ -1,11 +1,9 @@
-var buffer = require('buffer')
-
 if (Buffer.from && Buffer.alloc && Buffer.allocUnsafe && Buffer.allocUnsafeSlow) {
-  module.exports = buffer
+  module.exports = Buffer
 } else {
   // Copy properties from require('buffer')
-  Object.keys(buffer).forEach(function (prop) {
-    exports[prop] = buffer[prop]
+  Object.keys(Buffer).forEach(function (prop) {
+    exports[prop] = Buffer[prop]
   })
   exports.Buffer = SafeBuffer
 }
@@ -54,5 +52,5 @@ SafeBuffer.allocUnsafeSlow = function (size) {
   if (typeof size !== 'number') {
     throw new TypeError('Argument must be a number')
   }
-  return buffer.SlowBuffer(size)
+  return Buffer.SlowBuffer(size)
 }
