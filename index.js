@@ -1,3 +1,4 @@
+/* eslint-disable no-buffer-constructor */
 var buffer = require('buffer')
 
 if (Buffer.from && Buffer.alloc && Buffer.allocUnsafe && Buffer.allocUnsafeSlow) {
