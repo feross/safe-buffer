@@ -1,4 +1,4 @@
-/* eslint-disable no-buffer-constructor */
+/* eslint-disable node/no-deprecated-api */
 var buffer = require('buffer')
 var Buffer = buffer.Buffer
 
