@@ -1,5 +1,6 @@
 /* eslint-disable no-buffer-constructor */
 var buffer = require('buffer')
+var Buffer = buffer.Buffer
 
 if (Buffer.from && Buffer.alloc && Buffer.allocUnsafe && Buffer.allocUnsafeSlow) {
   module.exports = buffer
