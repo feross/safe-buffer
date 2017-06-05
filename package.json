@@ -1,21 +1,7 @@
 {
   "name": "safe-buffer",
-  "description": "Safer Node.js Buffer API",
   "version": "5.1.0",
-  "author": {
-    "name": "Feross Aboukhadijeh",
-    "email": "feross@feross.org",
-    "url": "http://feross.org"
-  },
-  "bugs": {
-    "url": "https://github.com/feross/safe-buffer/issues"
-  },
-  "devDependencies": {
-    "standard": "*",
-    "tape": "^4.0.0",
-    "zuul": "^3.0.0"
-  },
-  "homepage": "https://github.com/feross/safe-buffer",
+  "description": "Safer Node.js Buffer API",
   "keywords": [
     "buffer",
     "buffer allocate",
@@ -25,7 +11,19 @@
     "security",
     "uninitialized"
   ],
+  "homepage": "https://github.com/feross/safe-buffer",
+  "bugs": {
+    "url": "https://github.com/feross/safe-buffer/issues"
+  },
   "license": "MIT",
+  "author": {
+    "name": "Feross Aboukhadijeh",
+    "email": "feross@feross.org",
+    "url": "http://feross.org"
+  },
+  "files": [
+    "index.js"
+  ],
   "main": "index.js",
   "repository": {
     "type": "git",
@@ -33,5 +31,10 @@
   },
   "scripts": {
     "test": "standard && tape test.js"
+  },
+  "devDependencies": {
+    "standard": "*",
+    "tape": "^4.0.0",
+    "zuul": "^3.0.0"
   }
 }
