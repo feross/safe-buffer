@@ -6,9 +6,9 @@ if (Buffer.from && Buffer.alloc && Buffer.allocUnsafe && Buffer.allocUnsafeSlow)
   module.exports = buffer
 } else {
   // Copy properties from require('buffer')
-  Object.keys(buffer).forEach(function (prop) {
+  for (var prop in buffer) {
     exports[prop] = buffer[prop]
-  })
+  }
   exports.Buffer = SafeBuffer
 }
 
