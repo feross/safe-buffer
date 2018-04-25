@@ -33,6 +33,6 @@
     "url": "git://github.com/feross/safe-buffer.git"
   },
   "scripts": {
-    "test": "standard && tape test.js"
+    "test": "standard && tape test/*.js"
   }
 }

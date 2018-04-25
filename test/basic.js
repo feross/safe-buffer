@@ -1,7 +1,7 @@
 /* eslint-disable node/no-deprecated-api */
 
 var test = require('tape')
-var SafeBuffer = require('./').Buffer
+var SafeBuffer = require('../').Buffer
 
 test('new SafeBuffer(value) works just like Buffer', function (t) {
   t.deepEqual(new SafeBuffer('hey'), new Buffer('hey'))
