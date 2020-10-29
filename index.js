@@ -1,5 +1,5 @@
 /*! safe-buffer. MIT License. Feross Aboukhadijeh <https://feross.org/opensource> */
-/* eslint-disable node/no-deprecated-api */
+/* eslint-disable node/no-deprecated-api, no-var */
 var buffer = require('buffer')
 var Buffer = buffer.Buffer
 
